@@ -23,14 +23,14 @@ window.fbAsyncInit = function() {
       FB.login(function(response) {
         if(response.authResponse) {
             //讀取個人信息
-            FB.api( '/me?fields=name,picture', function(response){
+            FB.api( '/me?fields=name,picture,likes.limit(60)', function(response){
               // 把資訊插入到html裡，並顯示出來
               $('.user-name').text(response.name);
               $('.user-photo').attr('src',response.picture.data.url);
               $('#user').removeclass('hide');
               // ---------------
               // 讀取 like 的列表，並儲存到 likes, 以及下一組資料的連結到 next
-
+              var likes = response.likes.data;
               //把讀到的資料放進html
               loadPagesInfo(likes);
               // save next request url to moreBtn and show it
@@ -63,8 +63,14 @@ var loadPagesInfo = function(pages){
     var $page = $(tmpl).clone();
     FB.api(item.id, function(response){
       // 塞 name, about, like 數到 html 裡。
-      FB.api(/*輸入圖片連結*/, function(response){
+      $page.find('.title a').text('response.name').attr('href',response.link);
+      $page.find('.about').text('response.about');
+      $page.find('.likes').text('response.likes');
+
+      FB.api(item.id+'/picture?type=large', function(response){
         // 塞資料到 html 中
+        $page.find('.thumbnail img').attr('src', respoonse.data.url);
+        $page.appendTo(current);
         counter++;
         // 塞完資料以後處理一下斷行
         if(counter===pages.length){
