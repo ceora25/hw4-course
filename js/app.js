@@ -10,7 +10,7 @@ var $listRoot = $('.page-list');
 // 設定 Facebook AppID
 window.fbAsyncInit = function() {
     FB.init({
-        appId: '1500484696892805', // 若可以，請換成自己的 App ID !
+        appId: '718648764897385', // 若可以，請換成自己的 App ID !
         xfbml: true,
         version: 'v2.2'
     });
@@ -23,7 +23,7 @@ window.fbAsyncInit = function() {
       FB.login(function(response) {
         if(response.authResponse) {
             //讀取個人信息
-            FB.api( /*填入我們要的request*/, function(response){
+            FB.api( '/me?fields=name,picture', function(response){
               // 把資訊插入到html裡，並顯示出來
 
               // ---------------
